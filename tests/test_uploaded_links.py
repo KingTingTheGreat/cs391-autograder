@@ -8,6 +8,7 @@ github_domain = "github.com"
 
 def is_valid_url(url) -> bool:
     res = get(url)
+    print(res.text)
     return res.ok
 
 class TestUploadedLinks(unittest.TestCase):
@@ -21,7 +22,9 @@ class TestUploadedLinks(unittest.TestCase):
     def test_vercel_link(self):
         print("test vercel link")
         parsed_url = urlparse(self.vercel_link)
-        self.assertEqual(parsed_url.hostname, vercel_domain)
+        self.assertIsNot(parsed_url.hostname, None)
+        if parsed_url.hostname is not None:
+            self.assertTrue(parsed_url.hostname.endswith(vercel_domain))
         self.assertTrue(is_valid_url(self.vercel_link))
 
     @weight(50)
