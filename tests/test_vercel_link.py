@@ -1,15 +1,13 @@
 import unittest
 from gradescope_utils.autograder_utils.decorators import weight, number
-from helper_functions import get_url_from_list, is_valid_url
+from helper_functions import get_url_from_list, is_valid_url, list_from_file
 
 vercel_domain = "vercel.app"
 
 class TestVercelLink(unittest.TestCase):
     def setUp(self):
-        with open("/autograder/source/input_file.txt", "r") as f:
-            text = f.read().strip()
-            links = text.split()
-            self.vercel_link = get_url_from_list(links, vercel_domain, "MISSING VERCEL LINK")
+        links = list_from_file()
+        self.vercel_link = get_url_from_list(links, vercel_domain, "MISSING VERCEL LINK")
 
     @weight(10)
     @number(1)
