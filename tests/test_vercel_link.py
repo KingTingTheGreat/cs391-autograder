@@ -11,7 +11,7 @@ class TestVercelLink(unittest.TestCase):
             links = text.split()
             self.vercel_link = get_url_from_list(links, vercel_domain, "MISSING VERCEL LINK")
 
-    @weight(50)
+    @weight(10)
     @number(1)
     def test_vercel_link(self):
         self.assertTrue(is_valid_url(self.vercel_link), msg="VERCEL LINK DOES NOT WORK")

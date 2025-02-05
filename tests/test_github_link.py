@@ -11,7 +11,7 @@ class TestGithubLink(unittest.TestCase):
             links = text.split()
             self.github_link = get_url_from_list(links, github_domain, "MISSING GITHUB LINK")
 
-    @weight(50)
+    @weight(10)
     @number(1)
     def test_github_link(self):
         self.assertTrue(is_valid_url(self.github_link), msg="GITHUB LINK DOES NOT WORK")
