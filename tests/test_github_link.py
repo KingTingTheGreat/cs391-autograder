@@ -6,7 +6,7 @@ github_domain = "github.com"
 
 class TestGithubLink(unittest.TestCase):
     def setUp(self):
-        with open("/autograder/source/test.txt", "r") as f:
+        with open("/autograder/source/input_file.txt", "r") as f:
             text = f.read().strip()
             links = text.split()
             self.github_link = get_url_from_list(links, github_domain, "MISSING GITHUB LINK")

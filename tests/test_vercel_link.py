@@ -6,7 +6,7 @@ vercel_domain = "vercel.app"
 
 class TestVercelLink(unittest.TestCase):
     def setUp(self):
-        with open("/autograder/source/test.txt", "r") as f:
+        with open("/autograder/source/input_file.txt", "r") as f:
             text = f.read().strip()
             links = text.split()
             self.vercel_link = get_url_from_list(links, vercel_domain, "MISSING VERCEL LINK")

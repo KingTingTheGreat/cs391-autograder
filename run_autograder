@@ -3,21 +3,36 @@
 SOURCE_DIR="/autograder/submission"
 DEST_DIR="/autograder/source"
 
-SOURCE_FILE=$(find "$SOURCE_DIR" -type f -name "*.txt" | head -n 1)
+TEXT_FILE=$(find "$SOURCE_DIR" -type f -name "*.txt" | head -n 1)
+PDF_FILE=$(find "$SOURCE_DIR" -type f -name "*.pdf" | head -n 1)
 
-if [ -z "$SOURCE_FILE" ]; then
-    echo "No text file found"
+if [ -z "$TEXT_FILE" ] && [ -z "$PDF_FILE" ]; then
+    echo "No .txt or .pdf file found."
     exit 1
 fi
 
-cp "$SOURCE_FILE" "$DEST_DIR/test.txt"
-if [ $? -eq 0 ]; then
-    echo "Successfully found and copied text file."
+if [ -n "$TEXT_FILE" ]; then
+    cp "$TEXT_FILE" "$DEST_DIR/input_file.txt"
+    if [ $? -eq 0 ]; then
+        echo "Successfully found and copied text file."
+        cd "$DEST_DIR"
+        python3 run_tests.py
+        exit 0
+    else
+        echo "Failed to copy text file."
+        exit 1
+    fi
+fi
 
-    cd /autograder/source
-
-    python3 run_tests.py
-else
-    echo "Failed to copy text file."
-    exit 1
+if [ -n "$PDF_FILE" ]; then
+    cp "$PDF_FILE" "$DEST_DIR/input_file.pdf"
+    if [ $? -eq 0 ]; then
+        echo "Successfully found and copied PDF file."
+        cd "$DEST_DIR"
+        python3 run_tests.py
+        exit 0
+    else
+        echo "Failed to copy PDF file."
+        exit 1
+    fi
 fi
