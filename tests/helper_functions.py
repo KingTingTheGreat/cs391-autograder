@@ -6,7 +6,9 @@ TEXT_FILE = "/autograder/source/input_file.txt"
 PDF_FILE ="/autograder/source/input_file.pdf"
 
 def is_valid_url(url) -> bool:
+    print("validating", url, len(url))
     res = get(url)
+    print("response:", res.ok, res.status_code)
     return res.ok
 
 def is_from_domain(url, domain) -> bool:
@@ -18,7 +20,7 @@ def is_from_domain(url, domain) -> bool:
 def get_url_from_list(url_list, domain, msg="COULD NOT FIND URL") -> str:
     for url in url_list:
         if is_from_domain(url, domain):
-            return url
+            return url.strip()
     raise Exception(msg)
 
 def list_from_file() -> list[str]:
@@ -27,9 +29,11 @@ def list_from_file() -> list[str]:
             text = f.read().strip() 
             return text.split()
     except:
+        delim = chr(12)
         with pymupdf.open(PDF_FILE) as doc:
-            text = chr(12).join([page.get_text() for page in doc])
-            return text.split()
+            links = delim.join(link["uri"] for page in doc for link in page.get_links() if "uri" in link).split()
+            text = delim.join(page.get_text() for page in doc).split()
+            return links + text
 
 
 
